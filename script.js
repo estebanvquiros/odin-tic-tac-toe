@@ -37,3 +37,18 @@ const gameBoard = (function () {
 
 	return { resetBoard, placeMark };
 })();
+
+function createPlayer(name, mark) {
+	const playerName = name;
+	const playerMark = mark;
+
+	function getPlayerName() {
+		return playerName;
+	}
+
+	function getPlayerMark() {
+		return playerMark;
+	}
+
+	return { getPlayerName, getPlayerMark };
+}
