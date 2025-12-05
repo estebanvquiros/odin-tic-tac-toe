@@ -79,3 +79,55 @@ function createPlayer(name, mark) {
 
 	return { getPlayerName, getPlayerMark };
 }
+
+const gameController = (function () {
+	let players = [];
+	let currentTurn = 0;
+	let movesCounter = 0;
+	let draw = false;
+	let winner = false;
+
+	function initGame(namePlayer1, namePlayer2) {
+		players = [createPlayer(namePlayer1, "x"), createPlayer(namePlayer2, "o")];
+		gameBoard.resetBoard();
+		draw = false;
+		winner = false;
+	}
+
+	function takeTurn(position) {
+		if (draw || winner) return;
+
+		const currentPlayer = players[currentTurn];
+
+		const markWasPlaced = gameBoard.placeMark(
+			currentPlayer.getPlayerMark(),
+			position
+		);
+
+		if (!markWasPlaced) return;
+		movesCounter++;
+
+		if (
+			movesCounter >= 5 && // At least 5 moves are required before a win is possible
+			gameBoard.checkWinner(currentPlayer.getPlayerMark())
+		) {
+			console.log(`🏆 ${currentPlayer.getPlayerName()} won the game! 🏆`);
+			winner = true;
+			return;
+		}
+
+		if (movesCounter === 9) {
+			console.log(`It's a Draw 🤝`);
+			draw = true;
+			return;
+		}
+
+		_shiftTurn();
+	}
+
+	function _shiftTurn() {
+		currentTurn = (currentTurn + 1) % players.length;
+	}
+
+	return { initGame, takeTurn };
+})();
