@@ -35,7 +35,34 @@ const gameBoard = (function () {
 		return true;
 	}
 
-	return { resetBoard, placeMark };
+	function checkWinner(mark) {
+		const winningConditions = [
+			//Rows
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			//Columns
+			[0, 3, 6],
+			[1, 4, 7],
+			[2, 5, 8],
+			//Diagonals
+			[0, 4, 8],
+			[6, 4, 2],
+		];
+
+		for (let winCondition of winningConditions) {
+			if (
+				board[winCondition[0]] === mark &&
+				board[winCondition[1]] === mark &&
+				board[winCondition[2]] === mark
+			) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	return { resetBoard, placeMark, checkWinner };
 })();
 
 function createPlayer(name, mark) {
