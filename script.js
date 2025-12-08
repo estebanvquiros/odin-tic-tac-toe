@@ -90,3 +90,107 @@ function createPlayer(name, mark) {
 
 	return { getPlayerName, getPlayerMark };
 }
+
+const gameController = (function () {
+	let players = [];
+	let currentTurn = 0;
+	let movesCounter = 0;
+	let draw = false;
+	let win = false;
+
+	function initPlayers(playerName1, playerName2) {
+		const player1 = createPlayer(playerName1, "x");
+		const player2 = createPlayer(playerName2, "o");
+		players = [player1, player2];
+	}
+
+	function initGame() {
+		gameBoard.initBoard();
+		currentTurn = 0;
+		movesCounter = 0;
+		draw = false;
+		win = false;
+	}
+
+	function takeTurn(position) {
+		if (!gameContinue()) {
+			return {
+				status: "error",
+			};
+		}
+
+		let currentPlayer = getCurrentPlayer();
+		const moveConfirmation = makeMove(position, currentPlayer);
+
+		if (!moveConfirmation) {
+			return {
+				status: "error",
+			};
+		}
+
+		if (checkWinner(currentPlayer)) {
+			return {
+				status: "winner",
+				winner: currentPlayer.getPlayerName(),
+			};
+		}
+
+		if (checkDraw()) {
+			return {
+				status: "draw",
+			};
+		}
+
+		shiftTurn();
+		let nextPlayer = getCurrentPlayer();
+		return {
+			status: "continue",
+			nextPlayer: nextPlayer.getPlayerName(),
+		};
+	}
+
+	function makeMove(position, currentPlayer) {
+		const markPlaced = gameBoard.placeMark(
+			position,
+			currentPlayer.getPlayerMark()
+		);
+		if (!markPlaced) {
+			return false;
+		}
+		movesCounter++;
+		return true;
+	}
+
+	function gameContinue() {
+		return movesCounter < 9 && draw === false && win === false;
+	}
+
+	function checkDraw() {
+		if (movesCounter === 9) {
+			draw = true;
+			return true;
+		}
+		return false;
+	}
+
+	function checkWinner(currentPlayer) {
+		if (
+			movesCounter >= 5 &&
+			gameBoard.isWinner(currentPlayer.getPlayerMark())
+		) {
+			win = true;
+			return true;
+		}
+		return false;
+	}
+
+	function getCurrentPlayer() {
+		return players[currentTurn];
+	}
+
+	function shiftTurn() {
+		currentTurn = (currentTurn + 1) % players.length;
+	}
+
+	return { initPlayers, initGame, takeTurn };
+})();
