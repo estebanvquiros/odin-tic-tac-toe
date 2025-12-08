@@ -27,6 +27,34 @@ const gameBoard = (function () {
 		return true;
 	}
 
+	function isWinner(mark) {
+		const winConditions = [
+			// Rows
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+
+			// Columns
+			[0, 3, 6],
+			[1, 4, 7],
+			[2, 5, 8],
+
+			// Diagonals
+			[0, 4, 8],
+			[6, 4, 2],
+		];
+		for (let winCondition of winConditions) {
+			if (
+				board[winCondition[0]] === mark &&
+				board[winCondition[1]] === mark &&
+				board[winCondition[2]] === mark
+			) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	function _isValidPosition(position) {
 		return position >= 0 && position < board.length;
 	}
@@ -45,7 +73,7 @@ const gameBoard = (function () {
 		console.log(result);
 	}
 
-	return { initBoard, placeMark };
+	return { initBoard, placeMark, isWinner };
 })();
 
 function createPlayer(name, mark) {
