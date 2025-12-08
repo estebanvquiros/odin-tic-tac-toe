@@ -6,10 +6,15 @@ const gameBoard = (function () {
 	const board = [];
 
 	function initBoard() {
+		clearBoard();
 		for (let i = 0; i < BOARD_SIZE; i++) {
 			board.push(0);
 		}
 		_printBoard();
+	}
+
+	function clearBoard() {
+		board.length = 0;
 	}
 
 	function placeMark(position, mark) {
