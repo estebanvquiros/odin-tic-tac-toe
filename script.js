@@ -214,12 +214,15 @@ const UIController = (function () {
 	const gameBoard = document.querySelector("#gameBoard");
 	const cells = document.querySelectorAll(".cell");
 
+	const newGameButton = document.querySelector("#newGameButton");
+
 	const xMarkTemplate = document.querySelector("#xMarkTemplate");
 	const oMarkTemplate = document.querySelector("#oMarkTemplate");
 
 	// Bind events
 	playerCreationForm.addEventListener("submit", handleGameStart);
 	gameBoard.addEventListener("click", handleClickOnBoard);
+	newGameButton.addEventListener("click", handleNewGame);
 
 	// Handlers
 	function handleClickOnBoard(e) {
@@ -260,8 +263,17 @@ const UIController = (function () {
 		displayMessage(`${namePlayer1} takes the first turn! 🙌`);
 		gameController.initGame();
 
+		resetBoard();
+
 		toggleVisibility(playerSetupContainer);
 		toggleVisibility(gameContainer);
+
+		playerCreationForm.reset();
+	}
+
+	function handleNewGame() {
+		toggleVisibility(gameContainer);
+		toggleVisibility(playerSetupContainer);
 	}
 
 	// UI Helpers
@@ -289,6 +301,13 @@ const UIController = (function () {
 	function disableAllCells() {
 		cells.forEach((cell) => {
 			cell.classList.add("disabled");
+		});
+	}
+
+	function resetBoard() {
+		cells.forEach((cell) => {
+			cell.replaceChildren();
+			cell.classList.remove("disabled");
 		});
 	}
 
