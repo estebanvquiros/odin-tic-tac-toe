@@ -199,6 +199,8 @@ const gameController = (function () {
 })();
 
 const UIController = (function () {
+	let namePlayer1, namePlayer2;
+
 	// DOM Cache
 	const playerSetupContainer = document.querySelector("#playerSetupContainer");
 	const gameContainer = document.querySelector("#gameContainer");
@@ -254,8 +256,8 @@ const UIController = (function () {
 	function handleGameStart(e) {
 		e.preventDefault();
 
-		const namePlayer1 = inputPlayerName1.value;
-		const namePlayer2 = inputPlayerName2.value;
+		namePlayer1 = inputPlayerName1.value;
+		namePlayer2 = inputPlayerName2.value;
 		gameController.initPlayers(namePlayer1, namePlayer2);
 
 		displayPlayerNames(namePlayer1, namePlayer2);
