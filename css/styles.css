@@ -56,7 +56,9 @@ h1 {
 	background-color: var(--gray-0);
 	padding: 40px;
 	border-radius: 20px;
-	box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+	box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
+		rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+		rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
@@ -152,7 +154,7 @@ h1 {
 	color: var(--gray-8);
 }
 
-.board {
+.game-board {
 	width: 25rem;
 	height: 25rem;
 
@@ -186,6 +188,11 @@ h1 {
 
 .hidden {
 	display: none !important;
+}
+
+.disabled {
+	background-color: var(--violet-2);
+	pointer-events: none;
 }
 
 .button:hover {
