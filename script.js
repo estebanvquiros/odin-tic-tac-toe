@@ -131,6 +131,7 @@ const gameController = (function () {
 		if (checkWinner(currentPlayer)) {
 			return {
 				status: "winner",
+				currentPlayerMark: currentPlayer.getPlayerMark(),
 				winner: currentPlayer.getPlayerName(),
 			};
 		}
@@ -138,6 +139,7 @@ const gameController = (function () {
 		if (checkDraw()) {
 			return {
 				status: "draw",
+				currentPlayerMark: currentPlayer.getPlayerMark(),
 			};
 		}
 
@@ -145,6 +147,7 @@ const gameController = (function () {
 		let nextPlayer = getCurrentPlayer();
 		return {
 			status: "continue",
+			currentPlayerMark: currentPlayer.getPlayerMark(),
 			nextPlayer: nextPlayer.getPlayerName(),
 		};
 	}
@@ -208,19 +211,53 @@ const UIController = (function () {
 	const playerName2 = document.querySelector("#playerName2");
 	const display = document.querySelector("#display");
 
+	const gameBoard = document.querySelector("#gameBoard");
+	const cells = document.querySelectorAll(".cell");
+
+	const xMarkTemplate = document.querySelector("#xMarkTemplate");
+	const oMarkTemplate = document.querySelector("#oMarkTemplate");
+
 	// Bind events
 	playerCreationForm.addEventListener("submit", handleGameStart);
+	gameBoard.addEventListener("click", handleClickOnBoard);
 
 	// Handlers
+	function handleClickOnBoard(e) {
+		if (!e.target.classList.contains("cell")) return;
+
+		const selectedCell = e.target;
+
+		const gameOutput = gameController.takeTurn(selectedCell.dataset.position);
+		if (gameOutput.status === "error") return;
+
+		displayMark(selectedCell, gameOutput.currentPlayerMark);
+		disableCell(selectedCell);
+
+		if (gameOutput.status === "winner") {
+			displayMessage(`🏆 ${gameOutput.winner} won the game! 🏆`);
+			disableAllCells();
+			return;
+		}
+
+		if (gameOutput.status === "draw") {
+			displayMessage("It's a Draw 🤝");
+			disableAllCells();
+			return;
+		}
+
+		displayMessage(`It's ${gameOutput.nextPlayer}'s turn! ☝️`);
+	}
+
 	function handleGameStart(e) {
 		e.preventDefault();
 
 		const namePlayer1 = inputPlayerName1.value;
 		const namePlayer2 = inputPlayerName2.value;
 		gameController.initPlayers(namePlayer1, namePlayer2);
-		playerName1.textContent = namePlayer1;
-		playerName2.textContent = namePlayer2;
-		display.textContent = `${namePlayer1} takes the first turn!`;
+
+		displayPlayerNames(namePlayer1, namePlayer2);
+
+		displayMessage(`${namePlayer1} takes the first turn! 🙌`);
 		gameController.initGame();
 
 		toggleVisibility(playerSetupContainer);
@@ -228,6 +265,33 @@ const UIController = (function () {
 	}
 
 	// UI Helpers
+	function displayPlayerNames(name1, name2) {
+		playerName1.textContent = name1;
+		playerName2.textContent = name2;
+	}
+
+	function displayMessage(message) {
+		display.textContent = message;
+	}
+
+	function displayMark(cell, mark) {
+		const marks = {
+			x: xMarkTemplate.content.cloneNode(true),
+			o: oMarkTemplate.content.cloneNode(true),
+		};
+		cell.appendChild(marks[mark]);
+	}
+
+	function disableCell(cell) {
+		cell.classList.add("disabled");
+	}
+
+	function disableAllCells() {
+		cells.forEach((cell) => {
+			cell.classList.add("disabled");
+		});
+	}
+
 	function toggleVisibility(element) {
 		element.classList.contains("hidden")
 			? element.classList.remove("hidden")
