@@ -52,7 +52,7 @@ h1 {
 /*                                F O R M                                     */
 /* -------------------------------------------------------------------------- */
 
-.start {
+.player-setup-container {
 	background-color: var(--gray-0);
 	padding: 40px;
 	border-radius: 20px;
@@ -63,20 +63,20 @@ h1 {
 	width: 500px;
 }
 
-.start > p {
+.player-setup-container > p {
 	text-align: center;
 	font-style: italic;
 	color: var(--gray-8);
 	font-size: 1.1rem;
 }
 
-.form {
+.player-creation-form {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
 }
 
-.form > div {
+.player-creation-form > div {
 	background-color: var(--violet-2);
 	padding: 20px;
 	border-radius: 10px;
@@ -86,7 +86,7 @@ h1 {
 	gap: 20px;
 }
 
-.form > div > svg {
+.player-creation-form > div > svg {
 	width: 5rem;
 	fill: var(--violet-12);
 }
@@ -118,7 +118,7 @@ h1 {
 /*                                G A M E                                     */
 /* -------------------------------------------------------------------------- */
 
-.game {
+.game-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -166,7 +166,8 @@ h1 {
 }
 
 .display {
-	font-size: 2rem;
+	font-size: 1.5rem;
+	font-weight: 800;
 	color: var(--gray-8);
 }
 
