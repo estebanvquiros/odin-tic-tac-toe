@@ -217,6 +217,7 @@ const UIController = (function () {
 	const cells = document.querySelectorAll(".cell");
 
 	const newGameButton = document.querySelector("#newGameButton");
+	const restartGameButton = document.querySelector("#restartGameButton");
 
 	const xMarkTemplate = document.querySelector("#xMarkTemplate");
 	const oMarkTemplate = document.querySelector("#oMarkTemplate");
@@ -225,6 +226,7 @@ const UIController = (function () {
 	playerCreationForm.addEventListener("submit", handleGameStart);
 	gameBoard.addEventListener("click", handleClickOnBoard);
 	newGameButton.addEventListener("click", handleNewGame);
+	restartGameButton.addEventListener("click", handleRestartGame);
 
 	// Handlers
 	function handleClickOnBoard(e) {
@@ -271,6 +273,12 @@ const UIController = (function () {
 		toggleVisibility(gameContainer);
 
 		playerCreationForm.reset();
+	}
+
+	function handleRestartGame() {
+		displayMessage(`${namePlayer1} takes the first turn! 🙌`);
+		gameController.initGame();
+		resetBoard();
 	}
 
 	function handleNewGame() {
