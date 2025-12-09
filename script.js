@@ -194,3 +194,43 @@ const gameController = (function () {
 
 	return { initPlayers, initGame, takeTurn };
 })();
+
+const UIController = (function () {
+	// DOM Cache
+	const playerSetupContainer = document.querySelector("#playerSetupContainer");
+	const gameContainer = document.querySelector("#gameContainer");
+
+	const playerCreationForm = document.querySelector("#playerCreationForm");
+	const inputPlayerName1 = document.querySelector("#inputPlayerName1");
+	const inputPlayerName2 = document.querySelector("#inputPlayerName2");
+
+	const playerName1 = document.querySelector("#playerName1");
+	const playerName2 = document.querySelector("#playerName2");
+	const display = document.querySelector("#display");
+
+	// Bind events
+	playerCreationForm.addEventListener("submit", handleGameStart);
+
+	// Handlers
+	function handleGameStart(e) {
+		e.preventDefault();
+
+		const namePlayer1 = inputPlayerName1.value;
+		const namePlayer2 = inputPlayerName2.value;
+		gameController.initPlayers(namePlayer1, namePlayer2);
+		playerName1.textContent = namePlayer1;
+		playerName2.textContent = namePlayer2;
+		display.textContent = `${namePlayer1} takes the first turn!`;
+		gameController.initGame();
+
+		toggleVisibility(playerSetupContainer);
+		toggleVisibility(gameContainer);
+	}
+
+	// UI Helpers
+	function toggleVisibility(element) {
+		element.classList.contains("hidden")
+			? element.classList.remove("hidden")
+			: element.classList.add("hidden");
+	}
+})();
